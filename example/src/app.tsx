@@ -1,7 +1,7 @@
 import './wdyr'; // <--- must be first import
 import {Navigation} from 'react-native-navigation';
 // import {I18nManager} from 'react-native'; // <--- In order to test RTL
-//@ts-expect-error
+//@ts-ignore
 import {LocaleConfig} from 'react-native-calendars';
 import {registerScreens} from './screens';
 
@@ -28,7 +28,7 @@ LocaleConfig.locales['en'] = {
   ],
   monthNamesShort: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
   dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   // numbers: ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'] // number localization example
 };
 LocaleConfig.defaultLocale = 'en';

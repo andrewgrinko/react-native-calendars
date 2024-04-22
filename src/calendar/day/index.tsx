@@ -71,7 +71,7 @@ const Day = React.memo((props: DayProps) => {
   const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
 
   return (
-    //@ts-expect-error
+    //@ts-ignore
     <Component {...props} accessibilityLabel={getAccessibilityLabel} {...dayComponentProps}>
       {formatNumbers(_date?.getDate())}
     </Component>

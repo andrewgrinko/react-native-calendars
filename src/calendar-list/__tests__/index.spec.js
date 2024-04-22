@@ -1,7 +1,7 @@
 import React from 'react';
 import CalendarList from '../index';
 import {CalendarListDriver} from '../driver';
-//@ts-expect-error
+//@ts-ignore
 import {getMonthTitle} from '../../testUtils';
 
 const CURRENT = '2022-09-09';

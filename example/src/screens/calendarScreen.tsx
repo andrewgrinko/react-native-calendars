@@ -15,7 +15,7 @@ const CalendarScreen = () => {
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
-  const onDayPress = useCallback((day) => {
+  const onDayPress = useCallback(day => {
     setSelected(day.dateString);
   }, []);
 
@@ -54,7 +54,7 @@ const CalendarScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
       </Fragment>
     );
   };
@@ -217,7 +217,7 @@ const CalendarScreen = () => {
             textSectionTitleColor: '#319e8e',
             arrowColor: '#319e8e'
           }}
-          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
+          onDayPress={day => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
@@ -409,7 +409,9 @@ const CalendarScreen = () => {
 
     const CustomHeaderTitle = (
       <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
-        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
+        <Text style={styles.customTitle}>
+          {selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}
+        </Text>
       </TouchableOpacity>
     );
 
@@ -447,7 +449,7 @@ const CalendarScreen = () => {
       customHeaderProps.current = props;
 
       return (
-        // @ts-expect-error
+        // @ts-ignore
         <View ref={ref} {...props} style={styles.customHeader}>
           <TouchableOpacity onPress={movePrevious}>
             <Text>Previous</Text>
