@@ -147,11 +147,14 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     });
   }, [items]);
 
-  const getDateIndex = useCallback((date: string) => {
-    return findIndex(items, function(item) {
-      return item.toString() === date.toString();
-    });
-  }, [items]);
+  const getDateIndex = useCallback(
+    (date: string) => {
+      return findIndex(items, function (item) {
+        return item.toString() === date.toString();
+      });
+    },
+    [items]
+  );
 
   useEffect(() => {
     if (current) {
@@ -186,28 +189,37 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
 
     if (scrollAmount !== 0) {
+      // @ts-ignore
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
   };
 
-  const scrollToMonth = useCallback((date: XDate | string) => {
-    const scrollTo = parseDate(date);
-    const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
-    const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
+  const scrollToMonth = useCallback(
+    (date: XDate | string) => {
+      const scrollTo = parseDate(date);
+      const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
+      const scrollAmount =
+        calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
-    if (scrollAmount !== 0) {
-      list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
-    }
-  }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
+      if (scrollAmount !== 0) {
+        // @ts-ignore
+        list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+      }
+    },
+    [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]
+  );
 
-  const addMonth = useCallback((count: number) => {
-    const day = currentMonth?.clone().addMonths(count, true);
-    if (sameMonth(day, currentMonth) || getDateIndex(day) === -1) {
-      return;
-    }
-    scrollToMonth(day);
-    setCurrentMonth(day);
-  }, [currentMonth, scrollToMonth]);
+  const addMonth = useCallback(
+    (count: number) => {
+      const day = currentMonth?.clone().addMonths(count, true);
+      if (sameMonth(day, currentMonth) || getDateIndex(day) === -1) {
+        return;
+      }
+      scrollToMonth(day);
+      setCurrentMonth(day);
+    },
+    [currentMonth, scrollToMonth]
+  );
 
   const getMarkedDatesForItem = useCallback(
     (item?: XDate) => {
@@ -242,6 +254,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           markedDates={getMarkedDatesForItem(item)}
           item={item}
           style={calendarStyle}
+          // @ts-ignore
           horizontal={horizontal}
           calendarWidth={calendarWidth}
           calendarHeight={calendarHeight}
@@ -274,20 +287,23 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     viewAreaCoveragePercentThreshold: 20
   });
 
-  const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
-    const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    if (shouldUseAndroidRTLFix) {
-      const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
-      const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
-      visibleMonth.current = items[centerIndex + adjustedOffset];
-      setCurrentMonth(visibleMonth.current);
-    } else {
-      if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
-        visibleMonth.current = newVisibleMonth;
+  const onViewableItemsChanged = useCallback(
+    ({viewableItems}: any) => {
+      const newVisibleMonth = parseDate(viewableItems[0]?.item);
+      if (shouldUseAndroidRTLFix) {
+        const centerIndex = items.findIndex(item => isEqual(parseDate(current), item));
+        const adjustedOffset = centerIndex - items.findIndex(item => isEqual(newVisibleMonth, item));
+        visibleMonth.current = items[centerIndex + adjustedOffset];
         setCurrentMonth(visibleMonth.current);
+      } else {
+        if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
+          visibleMonth.current = newVisibleMonth;
+          setCurrentMonth(visibleMonth.current);
+        }
       }
-    }
-  }, [items, shouldUseAndroidRTLFix, current]);
+    },
+    [items, shouldUseAndroidRTLFix, current]
+  );
 
   const viewabilityConfigCallbackPairs = useRef([
     {
